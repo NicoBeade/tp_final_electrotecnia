@@ -1,7 +1,7 @@
 ## This git ignore was copied from:
 ## https://gist.github.com/Yousha/3830712334ac30a90eb6041b932b68d7. 
 ## The only modifications that were done to it involve adding the build folder from vscode
-
+ 
 # Add build folder to the gitignore
 build/
 
