@@ -3,78 +3,77 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
-# Obtener la ubicación del archivo actual
+#------------Load the signals from the .raw file
 ruta_actual = os.path.realpath(__file__)
 ruta_carpeta = os.path.dirname(ruta_actual)
-
-# Load the signals from the .raw file
 raw_file = ruta_carpeta + '/Montecarlo_Completo/Simulacion_SPICE_Montecarlo_Completo.raw'
 l = ltspice.Ltspice(raw_file) 
 # Make sure that the .raw file is located in the correct path
-l.parse() 
+l.parse()
+#-----------------------------------------------
 
 #Parameters for the circuit
-Vd_param = 12
-D = 0.4
-Vo_param = Vd_param*D
-Fs = 100E3
+Fs = 2.5
 Ts = 1/Fs
 
-L = 40E-6
-C = 15E-6
-R = 5
-
-#How many periods we want?
-N_periods = 1.2
-
-#Obtain basic signals
-
+#----------------------------Obtain basic signals
 time = l.get_time()
-time = (time - 1E-3)*1E+6                     #Convert to useg
+time = (time - 1E-3)*1E+3                     
+
 Vcc = l.get_data('V(vcc)')
 Vlplus = l.get_data('V(vl+)')
 Vlminus = l.get_data('V(vl-)')
-
-#Obtener compound signals
 Vl = Vlplus - Vlminus
 
-#Obtain currents
-il = l.get_data('I(L1)')
 ic = l.get_data('I(C1)')
-ir1 = l.get_data('I(R1)')
-ir2 = l.get_data('I(R2)')
-ir3 = l.get_data('I(R3)')
-id = -l.get_data('I(V1)')
+id = l.get_data('I(V1)')
+#------------------------------------------------
 
-signals = [Vl, il, ic, ir1, ir2, ir3, id]
-num_signals = len(signals)
-labels = ["$V_L$", "$i_L$", "$i_C$", "$i_R1$", "$i_R2$", "$i_R3$", "$i_d$"]
+
+currents = [ic]
+voltages = [Vl]
+
+num_signals = len(currents) + len(voltages)
+
+currents_labels = ["$i_C$"]
+voltages_labels = ["$V_L$"]
 
 #Set max and min Voltages and currents
 V_upper_limit = 13
 V_lower_limit = -13
-I_upper_limit = 1.5
+I_upper_limit = 0.5
 I_lower_limit = -0.5
 
-fig, axs = plt.subplots(nrows=4, ncols=2, figsize=(15, 15))
-#Adjust spacing
+fig = plt.figure(figsize=(15, 15))
 fig.subplots_adjust(hspace=0.5)
 
+for i in range(len(currents)):
+    plt.subplot(2,1,i + 1)
 
-for i, ax in enumerate(axs.flatten()):
-    print(i)
-    if i != 7:
-        ax.plot(time, signals[i], color = 'red')
-        ax.set_title(labels[i])
+    plt.title(currents_labels[i] + " $ [A]$")       #title
+    #axis
+    plt.xlabel("$Time\ [m seg]$")
+    plt.xlim(0, Ts*1E+3)
+    plt.ylim(I_lower_limit, I_upper_limit)
+    #plot function
+    plt.plot(time , currents[i], color = 'blue')
 
-        ax.set_ylim(I_lower_limit, I_upper_limit)
+for i in range(len(voltages)):
 
-        ax.set_xlabel("$Time\ [\mu seg]$")
-        ax.set_xlim(0, N_periods*Ts*1E6)
+    plt.subplot(2,1,i + 1 + len(currents))
 
-        ax.yaxis.set_label_coords(-0.01, 0.9)
+    plt.title(voltages_labels[i] + " $ [V]$")       #title
+    #axis
+    plt.xlabel("$Time\ [m seg]$")
+    plt.xlim(0, Ts*1E+3)
+    plt.ylim(V_lower_limit, V_upper_limit)
+    plt.axhline(y= Vcc[100], linestyle='--', linewidth = 0.5, color='grey')
+    #plot function
+    plt.plot(time , voltages[i], color = 'red')
 
 
+
+plt.show()
 
 
 '''
@@ -141,12 +140,3 @@ for i, ax in enumerate(axs.flatten()):
 
     ax.yaxis.set_label_coords(-0.01, 0.9)
 '''
-    
-    
-#axs[-1, -1].axis('off')  # Hide last subplot if there are an odd number of signals
-
-# Add a legend
-#ig.legend([f'Signal {i+1}' for i in range(num_signals)])
-
-# Save the figure to a PDF file
-plt.savefig('Buck_CCM_signals.pdf')
