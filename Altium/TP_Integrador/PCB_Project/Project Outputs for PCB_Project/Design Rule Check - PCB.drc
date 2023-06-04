@@ -1,7 +1,7 @@
 Protel Design System Design Rule Check
 PCB File : C:\Users\nicop\Documents\GitHub\tp_final_electrotecnia\Altium\TP_Integrador\PCB_Project\PCB.PcbDoc
 Date     : 4/6/2023
-Time     : 19:28:50
+Time     : 19:40:36
 
 Processing Rule : Clearance Constraint (Gap=22mil) (All),(All)
 Rule Violations :0
@@ -83,25 +83,10 @@ Rule Violations :2
 Processing Rule : Net Antennae (Tolerance=0mil) (All)
 Rule Violations :0
 
-Processing Rule : Room Esquematico (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Esquematico'))
-   Violation between Room Definition: Between DIP Component U1-TL082P (3991.26mil,2810mil) on Top Layer And Room Esquematico (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Esquematico')) 
-   Violation between Room Definition: Between Room Esquematico (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Esquematico')) And Small Component C1-100n (2861.26mil,2920mil) on Top Layer 
-   Violation between Room Definition: Between Room Esquematico (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Esquematico')) And Small Component C2-100n (3261.26mil,2920mil) on Top Layer 
-   Violation between Room Definition: Between Room Esquematico (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Esquematico')) And Small Component C3-100n (4281.26mil,2740mil) on Top Layer 
-   Violation between Room Definition: Between Room Esquematico (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Esquematico')) And Small Component C4-100n (3600mil,2660mil) on Top Layer 
-   Violation between Room Definition: Between Room Esquematico (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Esquematico')) And Small Component J1-BORNERA 3 (2598.425mil,2480.315mil) on Top Layer 
-   Violation between Room Definition: Between Room Esquematico (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Esquematico')) And Small Component J2-MOLEX2 (4641.26mil,2900mil) on Top Layer 
-   Violation between Room Definition: Between Room Esquematico (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Esquematico')) And Small Component J3-MOLEX2 (2481.26mil,2920mil) on Top Layer 
-   Violation between Room Definition: Between Room Esquematico (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Esquematico')) And Small Component R1-8.1k (2961.26mil,2660mil) on Top Layer 
-   Violation between Room Definition: Between Room Esquematico (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Esquematico')) And Small Component R2-8.1k (3361.26mil,3200mil) on Top Layer 
-   Violation between Room Definition: Between Room Esquematico (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Esquematico')) And Small Component R3-10k (4140mil,2380mil) on Top Layer 
-   Violation between Room Definition: Between Room Esquematico (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Esquematico')) And Small Component R4-8.1k (2960mil,2380mil) on Top Layer 
-Rule Violations :12
-
 Processing Rule : Height Constraint (Min=0mil) (Max=1000mil) (Prefered=500mil) (All)
 Rule Violations :0
 
 
-Violations Detected : 56
+Violations Detected : 44
 Waived Violations : 0
-Time Elapsed        : 00:00:01
+Time Elapsed        : 00:00:02
