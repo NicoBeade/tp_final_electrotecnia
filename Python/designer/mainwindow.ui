@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1114</width>
+    <height>861</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QWidget" name="SystemWidget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>10</y>
+      <width>521</width>
+      <height>220</height>
+     </rect>
+    </property>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>10</y>
+       <width>362</width>
+       <height>39</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>22</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Configuración del sistema</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="SystemOrder">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>70</y>
+       <width>175</width>
+       <height>35</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <item>
+      <property name="text">
+       <string>Primer Orden</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Segundo Orden</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Orden Superior</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QComboBox" name="FirstOrderFilters">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>120</y>
+       <width>175</width>
+       <height>35</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <item>
+      <property name="text">
+       <string>Paso Bajo</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Paso Alto</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Pasa Todo</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QComboBox" name="SecondOrderFilters">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>120</y>
+       <width>175</width>
+       <height>35</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <item>
+      <property name="text">
+       <string>Pasa Bajo</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Pasa Alto</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Pasa Todo</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Pasa Banda</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Notch</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QWidget" name="FirstOrderWidget" native="true">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>70</y>
+       <width>291</width>
+       <height>131</height>
+      </rect>
+     </property>
+     <widget class="QLabel" name="FrecuencyLabel">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>108</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Frecuencia:</string>
+      </property>
+     </widget>
+     <widget class="QDial" name="FrecuencyDial">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>10</y>
+        <width>71</width>
+        <height>71</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="SecondOrderWidget" native="true">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>70</y>
+       <width>291</width>
+       <height>131</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QWidget" name="SupOrderWidget" native="true">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>70</y>
+       <width>291</width>
+       <height>131</height>
+      </rect>
+     </property>
+    </widget>
+    <zorder>label</zorder>
+    <zorder>SystemOrder</zorder>
+    <zorder>FirstOrderFilters</zorder>
+    <zorder>SecondOrderFilters</zorder>
+    <zorder>SecondOrderWidget</zorder>
+    <zorder>SupOrderWidget</zorder>
+    <zorder>FirstOrderWidget</zorder>
+   </widget>
+   <widget class="QWidget" name="InputWidget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>570</x>
+      <y>10</y>
+      <width>521</width>
+      <height>220</height>
+     </rect>
+    </property>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>10</y>
+       <width>393</width>
+       <height>39</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>22</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Configuración de la Entrada</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1114</width>
+     <height>23</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

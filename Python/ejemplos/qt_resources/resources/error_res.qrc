@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="err_prefix">
+    <file>racing_mufa.jpg</file>
+  </qresource>
+</RCC>

@@ -1,0 +1,47 @@
+% Se configura el tipo de documento
+\documentclass[a4paper]{article}
+
+% Paquetes utilizados
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, es-tabla]{babel}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{subcaption}
+
+% Paquetes de matematica
+\usepackage{amsmath}
+\usepackage{steinmetz}
+
+% Paquetes para excel
+\usepackage{csvsimple}
+\usepackage{listings}
+\lstset{language=Python}
+\lstset{frame=lines}
+\lstset{label={lst:code_direct}}
+\lstset{basicstyle=\footnotesize}
+
+% Paquetes para directorios en LaTeX
+\usepackage{dirtree}
+\DTsetlength{1em}{3em}{0.11em}{1pt}{4pt}
+
+% Configuracion del informe
+\setlength{\parindent}{0pt}
+\setcounter{secnumdepth}{0}
+
+\usepackage[a4paper, 
+    includehead, 
+    footskip=7mm, 
+    headsep=6mm, 
+    headheight=4.8mm,
+    top=25mm, bottom=25mm, left=25mm, right=25mm]{geometry}
+
+\usepackage{float}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+    citecolor=blue,    
+}
