@@ -1,0 +1,23 @@
+* C:\Users\beade\Documents\ITBA\ELECTROTECNIA\tp_final_electrotecnia\LTSpice\Montecarlo_R3\Simulacion_SPICE_Montecarlo_R3.asc
+R1 VL+ Vcc {R1}
+C1 VL+ N001 {mc({C},tol_C)}
+R2 N001 0 {R2}
+R3 VL- 0 {mc({R3},tol_R)}
+L1 VL+ VL- {mc({L},tol_L)}
+V1 Vcc 0 PULSE(0 10 10m 1n 1n 200m 400m 10)
+* Circuit
+* Source / Switch
+* Parameters
+.param R1 = 50
+.param R2 = 7
+.param R3 = 6
+.param C = 300u
+.param L = 450m
+* Simulation setup
+.param tol_R = 0.05
+.param tol_C = 0.1
+.param tol_L = 0
+.step param run 1 50 1
+.tran 0 400m 0 1u
+.backanno
+.end
