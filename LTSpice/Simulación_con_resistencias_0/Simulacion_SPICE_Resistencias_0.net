@@ -1,0 +1,19 @@
+* C:\Users\facud\OneDrive\Escritorio\ITBA\Primer Cuatri 2023\Electrotecnia I\TP Final\LTSpice\tp_final_electrotecnia\LTSpice\Simulación_con_resistencias_0\Simulacion_SPICE_Resistencias_0.asc
+R1 VL+ Vcc {R1}
+C1 VL+ N001 {C}
+R2 N001 0 {R2}
+R3 VL- 0 {R3}
+L1 VL+ VL- {L}
+V1 Vcc 0 PULSE(0 10 10m 1n 1n 200m 400m 10)
+.tran 0 400m 0 1u
+* Circuit
+* Source / Switch
+* Parameters
+.param R1=0.0001
+.param R2=0.0001
+.param R3=0.0001
+.param C = 300u
+.param L = 450m
+* Simulation setup
+.backanno
+.end
