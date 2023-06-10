@@ -37,12 +37,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         #Grafico de ganancia
         self.GainBode = Figure()
         self.GainCanvas = FigureCanvas(self.GainBode)
-        self.GainAxes = self.GainBode.add_subplot(figsize=(16,9))
+        self.GainAxes = self.GainBode.add_subplot()
         self.BodeLayout.addWidget(self.GainCanvas)
         #Grafico de fase
         self.PhaseBode = Figure()
         self.PhaseCanvas = FigureCanvas(self.PhaseBode)
-        self.PhaseAxes = self.PhaseBode.add_subplot(figsize=(16,9))
+        self.PhaseAxes = self.PhaseBode.add_subplot()
         self.BodeLayout.addWidget(self.PhaseCanvas)
         #Grafico de Entrada
         self.InputFigure = Figure()

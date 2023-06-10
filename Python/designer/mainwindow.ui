@@ -734,7 +734,11 @@
          <height>431</height>
         </rect>
        </property>
-       <layout class="QVBoxLayout" name="BodeLayout"/>
+       <layout class="QVBoxLayout" name="BodeLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+       </layout>
       </widget>
      </widget>
      <widget class="QWidget" name="IOTab">
@@ -812,7 +816,7 @@
      <x>0</x>
      <y>0</y>
      <width>1114</width>
-     <height>23</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
