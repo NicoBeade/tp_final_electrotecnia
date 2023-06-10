@@ -675,9 +675,9 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>270</y>
+      <y>250</y>
       <width>1071</width>
-      <height>521</height>
+      <height>541</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -715,7 +715,7 @@
        <x>10</x>
        <y>10</y>
        <width>1051</width>
-       <height>451</height>
+       <height>471</height>
       </rect>
      </property>
      <property name="currentIndex">
@@ -731,7 +731,7 @@
          <x>0</x>
          <y>0</y>
          <width>1041</width>
-         <height>411</height>
+         <height>431</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="BodeLayout"/>
@@ -774,7 +774,7 @@
      <property name="geometry">
       <rect>
        <x>860</x>
-       <y>470</y>
+       <y>490</y>
        <width>181</width>
        <height>41</height>
       </rect>
@@ -790,7 +790,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>470</y>
+       <y>490</y>
        <width>341</width>
        <height>41</height>
       </rect>
