@@ -16,7 +16,6 @@ from ui.matplotlib import Ui_Form
 from numpy import *
 from time import *
 from random import *
-from scipy import signal
 
 
 class MatplotlibWidget(QWidget, Ui_Form):

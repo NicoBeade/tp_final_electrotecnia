@@ -11,6 +11,7 @@ import numpy as np
 from time import *
 from random import *
 from scipy import signal
+import matplotlib.image as mpimg
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -36,12 +37,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         #Grafico de ganancia
         self.GainBode = Figure()
         self.GainCanvas = FigureCanvas(self.GainBode)
-        self.GainAxes = self.GainBode.add_subplot()
+        self.GainAxes = self.GainBode.add_subplot(figsize=(16,9))
         self.BodeLayout.addWidget(self.GainCanvas)
         #Grafico de fase
         self.PhaseBode = Figure()
         self.PhaseCanvas = FigureCanvas(self.PhaseBode)
-        self.PhaseAxes = self.PhaseBode.add_subplot()
+        self.PhaseAxes = self.PhaseBode.add_subplot(figsize=(16,9))
         self.BodeLayout.addWidget(self.PhaseCanvas)
         #Grafico de Entrada
         self.InputFigure = Figure()
@@ -59,8 +60,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.PZAxes = self.PZFigure.add_subplot()
 
         self.UpdateBotton.clicked.connect(self.plotGraphics)
-
-
+                 
     def plotGraphics(self):
 
         InputTypeIndex = self.InputType.currentIndex()          #0: senoide, 1: Escalon, 2: Pulso periodico, 3: Triangular
@@ -80,14 +80,83 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         self.PhaseAxes.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: f'{x:.0f}°'))
 
+        self.systemParameters = []
         if SystemOrderIndex == 0:
-            self.firstOrder()
+            self.firstOrder(self.systemParameters)
         elif SystemOrderIndex == 1:
-            self.secondOrder()
+            self.secondOrder(self.systemParameters)
         elif SystemOrderIndex == 2:
-            self.supOrder()
+            self.supOrder(self.systemParameters)
 
-    def firstOrder(self):
+        if len(self.systemParameters):
+            system = signal.TransferFunction(self.systemParameters[0], self.systemParameters[1])
+            
+        #-----------------Bode----------------------------
+            w, mag, phase = signal.bode(system)
+            self.GainAxes.semilogx(w, mag, color = 'blue')
+            self.PhaseAxes.semilogx(w, phase, color = 'red')
+            self.GainAxes.grid()
+            self.PhaseAxes.grid()
+            self.GainCanvas.draw()
+            self.PhaseCanvas.draw()
+        #-------------------------------------------------
+
+        #-----------------Polos y Ceros-------------------
+            poles_real = system.poles.real
+            poles_imag = system.poles.imag
+            zeros_real = system.zeros.real
+            zeros_imag = system.zeros.imag
+            polesRealMod = [np.abs(pole) for pole in poles_real]
+            zerosRealMod = [np.abs(zero) for zero in zeros_real]
+            polesImagMod = [np.abs(pole) for pole in poles_imag]
+            zerosimagMod = [np.abs(zero) for zero in zeros_imag]
+            xLimMax = 0
+            yLimMax = 0
+
+        #SUS_PNG = mpimg.imread('resources\\SUS.png')
+        
+            if len(system.zeros):
+                for i in range(len(zeros_real)):
+                    self.PZAxes.scatter(zeros_real[i], zeros_imag[i], color='blue', marker='o', s=100)
+                xLimMax = max(polesRealMod)*1.5 + 10 if max(polesRealMod) >= max(zerosRealMod) else max(zerosRealMod)*1.5 + 10
+                yLimMax = max(polesImagMod)*1.5 + 10 if max(polesImagMod) >= max(zerosimagMod) else max(zerosimagMod)*1.5 + 10
+            else:
+                xLimMax = max(polesRealMod)*1.5 + 10
+                yLimMax = max(polesImagMod)*1.5 + 10
+
+            for i in range(len(poles_real)):
+                self.PZAxes.scatter(poles_real[i], poles_imag[i], color='red', marker='x', s=100)
+
+            self.PZAxes.annotate("", xy=(-xLimMax, 0), xytext=(xLimMax, 0), arrowprops=dict(arrowstyle='<-')) # Eje x
+            self.PZAxes.annotate(r"$\sigma$", xy=(xLimMax,0), xytext=(1, 5),textcoords='offset points', ha='center', fontsize = 13)
+            self.PZAxes.annotate("", xy=(0, -yLimMax), xytext=(0, yLimMax), arrowprops=dict(arrowstyle='<-')) # Eje y
+            self.PZAxes.annotate(r"$j \omega$", xy=(0,yLimMax), xytext=(8, 1),textcoords='offset points', ha='center', fontsize = 13)
+            
+            self.PZAxes.set_xlim(-xLimMax, xLimMax)
+            self.PZAxes.set_ylim(-yLimMax, yLimMax)
+            self.PZAxes.grid()
+            
+            # Saca el 0 del grafico
+            yticks = self.PZAxes.get_yticks()
+            xticks = self.PZAxes.get_xticks()
+            # Número que deseas eliminar
+            numero_a_borrar = 0
+            # Filtrar las marcas del eje para eliminar el número específico
+            nuevas_yticks = [tick for tick in yticks if tick != numero_a_borrar]
+            nuevas_xticks = [tick for tick in yticks if tick != numero_a_borrar]
+            # Establecer las nuevas marcas del eje
+            self.PZAxes.set_yticks(nuevas_yticks)
+            self.PZAxes.set_xticks(nuevas_xticks)
+            
+            self.PZCanvas.draw()
+        #--------------------------------------------------
+
+        #-------------Entrada y Salida---------------------
+
+        #--------------------------------------------------
+
+
+    def firstOrder(self, systemParameters):
 
         filterType = self.FirstOrderFilters.currentIndex()      #0: pasa bajos, 1: pasa altos, 2: pasa todo
         gain = self.GainInput.text()
@@ -98,57 +167,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             gain = float(self.GainInput.text())
             frecuency = float(self.FrecuencyInput.text())
+            k = pow(10, gain/20)
             #pasa bajos
             if filterType == 0:
-                num = [gain]
+                num = [k]
                 den = [(1/frecuency), 1]
             #pasa altos
             if filterType == 1:
-                num = [gain, 0]
+                num = [k / frecuency, 0]
                 den = [(1/frecuency), 1]
             #pasa todo
             if filterType == 2:
-                num = [gain/frecuency, -gain]
+                num = [k/frecuency, -k]
                 den = [(1/frecuency), 1]
-        
-            system = signal.TransferFunction(num, den)
-            w, mag, phase = signal.bode(system)
-            self.GainAxes.semilogx(w, mag, color = 'blue')
-            self.PhaseAxes.semilogx(w, phase, color = 'red')
-            self.GainCanvas.draw()
-            self.PhaseCanvas.draw()
 
-            cero = 0.0
-            xLimMin = 0
-            xLimMax = 0
-            if system.zeros:
-                cero = system.zeros[0]
-                self.PZAxes.scatter(system.zeros[0], 0, color='blue', marker='o', s=100)
-                xLimMin = - np.abs(cero) - 5 * (np.abs(cero) / 10)
-                xLimMax = np.abs(cero) + 5 * (np.abs(cero) / 10)
-            if system.poles:
-                self.PZAxes.scatter(system.poles[0], 0, color='red', marker='x', s=100)
-                if np.abs(system.poles[0]) > np.abs(cero):
-                    xLimMin = - np.abs(system.poles[0]) - 5 * (np.abs(system.poles[0]) / 10)
-                    xLimMax = np.abs(system.poles[0]) + 5 * (np.abs(system.poles[0]) / 10)
-            else: 
-                self.PZAxes.clear()
-            
-            self.PZAxes.annotate("", xy=(xLimMin, 0), xytext=(xLimMax, 0), arrowprops=dict(arrowstyle='<-')) # Eje x
-            self.PZAxes.annotate(r"$\sigma$", xy=(xLimMax,0), xytext=(1, 5),textcoords='offset points', ha='center', fontsize = 13)
-            self.PZAxes.annotate("", xy=(0, -1), xytext=(0, 1), arrowprops=dict(arrowstyle='<-')) # Eje y
-            self.PZAxes.annotate(r"$j \omega$", xy=(0,1), xytext=(8, 1),textcoords='offset points', ha='center', fontsize = 13)
-            
-            self.PZAxes.set_xlim(xLimMin, xLimMax)
-            self.PZAxes.set_ylim(-1,1)
-            
-            self.PZCanvas.draw()
-        
+            systemParameters.append(num)
+            systemParameters.append(den)
+                    
         else:
 
             self.ErrorLabel.show()
+            self.ErrorLabel.setText("Faltan Datos!")
 
-    def secondOrder(self):
+    def secondOrder(self, systemParameters):
 
         filterType = self.SecondOrderFilters.currentIndex()      #0: pasa bajos, 1: pasa altos, 2: pasa todo, 3: pasa banda, 4: notch
         gain = self.GainInput.text()
@@ -161,38 +202,36 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             gain = float(self.GainInput.text())
             omega = float(self.OmegaInput.text())
             xsi = float(self.XsiInput.text())
+            k = pow(10, gain/20)
             #pasa bajos
             if filterType == 0:
-                num = [gain]
+                num = [k]
                 den = [(1/pow(omega, 2)), 2*xsi/omega, 1]
             #pasa altos
             if filterType == 1:
-                num = [gain, 0, 0]
+                num = [k / pow(omega, 2), 0, 0]
                 den = [(1/pow(omega, 2)), 2*xsi/omega, 1]
             #pasa todo
             if filterType == 2:
-                num = [(gain/pow(omega, 2)), -gain*2*xsi/omega, gain]
+                num = [(k/pow(omega, 2)), -k*2*xsi/omega, k]
                 den = [(1/pow(omega, 2)), 2*xsi/omega, 1]
             #pasa banda
-            if filterType == 1:
-                num = [gain, 0]
+            if filterType == 3:
+                num = [k * 2*xsi / omega, 0]
                 den = [(1/pow(omega, 2)), 2*xsi/omega, 1]
             #Notch
-            if filterType == 2:
-                num = [(gain/pow(omega, 2)), 0, gain]
+            if filterType == 4:
+                num = [(k/pow(omega, 2)), 0, k]
                 den = [(1/pow(omega, 2)), 2*xsi/omega, 1]
         
-            system = signal.TransferFunction(num, den)
-            w, mag, phase = signal.bode(system)
-            self.GainAxes.semilogx(w, mag)
-            self.PhaseAxes.semilogx(w, phase)
-            self.GainCanvas.draw()
-            self.PhaseCanvas.draw()
+            systemParameters.append(num)
+            systemParameters.append(den)
         
         else:
             self.ErrorLabel.show()
+            self.ErrorLabel.setText("Faltan Datos!")
 
-    def supOrder(self):
+    def supOrder(self, systemParameters):
 
         gain = self.GainInput.text()
         numerador = self.NumeratorInput.text()
@@ -200,22 +239,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         if gain and numerador and denominador:
             self.ErrorLabel.hide()
-
+            
             gain = float(self.GainInput.text())
+            k = pow(10, gain/20)
             num = numerador.split()
-            num = [float(numero) * gain for numero in num]
+            num = [float(numero) * k for numero in num]
             den = denominador.split()
             den = [float(numero) for numero in den]
-        
-            system = signal.TransferFunction(num, den)
-            w, mag, phase = signal.bode(system)
-            self.GainAxes.semilogx(w, mag)
-            self.PhaseAxes.semilogx(w, phase)
-            self.GainCanvas.draw()
-            self.PhaseCanvas.draw()
+            if len(den) == 1:
+                self.ErrorLabel.show()
+                self.ErrorLabel.setText("Denominador incorrecto")
+            else:
+                systemParameters.append(num)
+                systemParameters.append(den)
         
         else:
             self.ErrorLabel.show()
+            self.ErrorLabel.setText("Faltan Datos!")
 
     def changeSystemFrame(self):
         order = self.SystemOrder.currentIndex()

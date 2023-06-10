@@ -312,7 +312,7 @@ class Ui_MainWindow(object):
         self.UpdateBotton.setToolTipDuration(1)
         self.UpdateBotton.setObjectName("UpdateBotton")
         self.ErrorLabel = QtWidgets.QLabel(self.GraphicsFrame)
-        self.ErrorLabel.setGeometry(QtCore.QRect(690, 470, 161, 41))
+        self.ErrorLabel.setGeometry(QtCore.QRect(10, 470, 341, 41))
         font = QtGui.QFont()
         font.setPointSize(18)
         self.ErrorLabel.setFont(font)
