@@ -10,10 +10,22 @@
     <height>861</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <widget class="QFrame" name="SystemFrame">
     <property name="geometry">
      <rect>
@@ -22,6 +34,12 @@
       <width>521</width>
       <height>220</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
     </property>
     <property name="frameShape">
      <enum>QFrame::Box</enum>
@@ -416,6 +434,15 @@
       </font>
      </property>
     </widget>
+    <zorder>SecondOrderFilters</zorder>
+    <zorder>label</zorder>
+    <zorder>SystemOrder</zorder>
+    <zorder>FirstOrderWidget</zorder>
+    <zorder>SecondOrderWidget</zorder>
+    <zorder>SupOrderWidget</zorder>
+    <zorder>GainLabel</zorder>
+    <zorder>GainInput</zorder>
+    <zorder>FirstOrderFilters</zorder>
    </widget>
    <widget class="QFrame" name="InputFrame">
     <property name="geometry">
@@ -425,6 +452,18 @@
       <width>521</width>
       <height>220</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="baseSize">
+     <size>
+      <width>520</width>
+      <height>220</height>
+     </size>
     </property>
     <property name="font">
      <font>
@@ -469,6 +508,12 @@
        <width>175</width>
        <height>35</height>
       </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
      <property name="font">
       <font>
@@ -635,6 +680,12 @@
       <height>521</height>
      </rect>
     </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
     <property name="font">
      <font>
       <pointsize>14</pointsize>
@@ -668,7 +719,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="BodeTab">
       <attribute name="title">
@@ -733,6 +784,24 @@
      </property>
      <property name="text">
       <string>Actualizar</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="ErrorLabel">
+     <property name="geometry">
+      <rect>
+       <x>690</x>
+       <y>470</y>
+       <width>161</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>18</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Faltan Datos!</string>
      </property>
     </widget>
    </widget>
