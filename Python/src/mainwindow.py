@@ -7,7 +7,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 import matplotlib.ticker as ticker
 
-from numpy import *
+import numpy as np
 from time import *
 from random import *
 from scipy import signal
@@ -57,11 +57,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.PZFigure = Figure()
         self.PZCanvas = FigureCanvas(self.PZFigure)
         self.PZAxes = self.PZFigure.add_subplot()
-        self.PZAxes.spines['left'].set_position('zero')
-        self.PZAxes.spines['bottom'].set_position('zero')
-        self.PZAxes.spines['right'].set_visible(False)
-        self.PZAxes.spines['top'].set_visible(False)
-        self.PZLayout.addWidget(self.PZCanvas)
 
         self.UpdateBotton.clicked.connect(self.plotGraphics)
 
@@ -74,6 +69,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.GainAxes.clear()
         self.PhaseAxes.clear()
         self.PZAxes.clear()
+        
+        self.PZAxes.spines['left'].set_position('zero')
+        self.PZAxes.spines['bottom'].set_position('zero')
+        self.PZAxes.spines['left'].set_visible(False)
+        self.PZAxes.spines['bottom'].set_visible(False)
+        self.PZAxes.spines['right'].set_visible(False)
+        self.PZAxes.spines['top'].set_visible(False)
+        self.PZLayout.addWidget(self.PZCanvas)
+        
         self.PhaseAxes.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: f'{x:.0f}°'))
 
         if SystemOrderIndex == 0:
@@ -114,10 +118,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.GainCanvas.draw()
             self.PhaseCanvas.draw()
 
+            cero = 0.0
+            xLimMin = 0
+            xLimMax = 0
             if system.zeros:
+                cero = system.zeros[0]
                 self.PZAxes.scatter(system.zeros[0], 0, color='blue', marker='o', s=100)
+                xLimMin = - np.abs(cero) - 5 * (np.abs(cero) / 10)
+                xLimMax = np.abs(cero) + 5 * (np.abs(cero) / 10)
             if system.poles:
                 self.PZAxes.scatter(system.poles[0], 0, color='red', marker='x', s=100)
+                if np.abs(system.poles[0]) > np.abs(cero):
+                    xLimMin = - np.abs(system.poles[0]) - 5 * (np.abs(system.poles[0]) / 10)
+                    xLimMax = np.abs(system.poles[0]) + 5 * (np.abs(system.poles[0]) / 10)
+            else: 
+                self.PZAxes.clear()
+            
+            self.PZAxes.annotate("", xy=(xLimMin, 0), xytext=(xLimMax, 0), arrowprops=dict(arrowstyle='<-')) # Eje x
+            self.PZAxes.annotate(r"$\sigma$", xy=(xLimMax,0), xytext=(1, 5),textcoords='offset points', ha='center', fontsize = 13)
+            self.PZAxes.annotate("", xy=(0, -1), xytext=(0, 1), arrowprops=dict(arrowstyle='<-')) # Eje y
+            self.PZAxes.annotate(r"$j \omega$", xy=(0,1), xytext=(8, 1),textcoords='offset points', ha='center', fontsize = 13)
+            
+            self.PZAxes.set_xlim(xLimMin, xLimMax)
+            self.PZAxes.set_ylim(-1,1)
             
             self.PZCanvas.draw()
         
