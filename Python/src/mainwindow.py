@@ -69,6 +69,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.GainAxes.clear()
         self.PhaseAxes.clear()
         self.PZAxes.clear()
+        self.InputAxes.clear()
+        self.OutputAxes.clear()
         
         self.PZAxes.spines['left'].set_position('zero')
         self.PZAxes.spines['bottom'].set_position('zero')
@@ -152,6 +154,109 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         #--------------------------------------------------
 
         #-------------Entrada y Salida---------------------
+
+        inputType = self.InputType.currentIndex()
+        if( inputType == 0):
+            # Senoidal
+            ampli = float(self.AmpInput.text())
+            frecuency = float(self.EntryFrecInput.text())
+
+            phase_duty = float(self.Phase_DutyCicleInput.text())
+            # Senoidal
+            # Señal senoidal
+            T = 1.0 / frecuency  # Período de la señal senoidal
+            num_periods = 6  # Número de períodos que deseas generar
+            num_samples_per_period = 200  # Número de muestras por período
+
+            num_samples = num_periods * num_samples_per_period
+            tset = np.linspace(0, num_periods * T, num_samples, endpoint=False)
+
+            yin = ampli * np.sin(2 * np.pi * frecuency * tset + phase_duty*np.pi/180)
+
+            tout, yout, xout = signal.lsim(system, U=yin, T=tset)
+
+            self.InputAxes.plot(tset, yin, color='red')
+            self.InputAxes.grid()
+            self.InputCanvas.draw()
+
+            self.OutputAxes.plot(tout, yout, color='blue')
+            self.OutputAxes.grid()
+            self.OutputCanvas.draw()
+            
+        if( inputType == 1):
+            ampli = float(self.AmpInput.text())
+            # Escalón
+            T = 1  # Duración del escalón
+            num_samples = 1000  # Número de muestras
+
+            tset = np.linspace(0, T, num_samples, endpoint=False)
+            yin = np.repeat(ampli, num_samples)
+            yin[0] = 0
+
+            tout, yout, xout = signal.lsim(system, U=yin, T=tset)
+
+            self.InputAxes.plot(tset, yin, color='red')
+            self.InputAxes.grid()
+            self.InputCanvas.draw()
+
+            self.OutputAxes.plot(tout, yout, color='blue')
+            self.OutputAxes.grid()
+            self.OutputCanvas.draw()
+            
+        if( inputType == 2):
+            ampli = float(self.AmpInput.text())
+            frecuency = float(self.EntryFrecInput.text())
+            duty_cycle = float(self.Phase_DutyCicleInput.text())
+            if duty_cycle >= 1:
+                duty_cycle = 1
+
+            # Señal cuadrada PWM
+            T = 1 / frecuency  # Período de la señal cuadrada PWM
+            num_periods = 6  # Número de períodos que deseas generar
+            num_samples_per_period = 200  # Número de muestras por período
+
+            num_samples = num_periods * num_samples_per_period
+            tset = np.linspace(0, num_periods * T, num_samples, endpoint=False)
+
+            yin = ampli * signal.square(2 * np.pi * frecuency * tset, duty=duty_cycle)
+
+            tout, yout, xout = signal.lsim(system, U=yin, T=tset)
+
+            self.InputAxes.plot(tset, yin, color='red')
+            self.InputAxes.grid()
+            self.InputCanvas.draw()
+
+            self.OutputAxes.plot(tout, yout, color='blue')
+            self.OutputAxes.grid()
+            self.OutputCanvas.draw()
+            
+            
+        if( inputType == 3):
+            #Triangular
+            ampli = float(self.AmpInput.text())
+            frecuency = float(self.EntryFrecInput.text())
+            duty_cycle = float(self.Phase_DutyCicleInput.text())
+            if duty_cycle >= 1:
+                duty_cycle = 1
+            # Señal triangular
+            T = 1.0 / frecuency  # Período de la señal triangular
+            num_periods = 6  # Número de períodos que deseas generar
+            num_samples_per_period = 200  # Número de muestras por período
+
+            num_samples = num_periods * num_samples_per_period
+            tset = np.linspace(0, num_periods * T, num_samples, endpoint=False)
+
+            yin = ampli * signal.sawtooth(2 * np.pi * frecuency * tset, width=duty_cycle)
+
+            tout, yout, xout = signal.lsim(system, U=yin, T=tset)
+
+            self.InputAxes.plot(tset, yin, color='red')
+            self.InputAxes.grid()
+            self.InputCanvas.draw()
+
+            self.OutputAxes.plot(tout, yout, color='blue')
+            self.OutputAxes.grid()
+            self.OutputCanvas.draw()
 
         #--------------------------------------------------
 
