@@ -1,7 +1,6 @@
 # TP FINAL ELECTROTECNIA
 22.02 Electrotecnia - Trabajo Practico Final - Python, LTSpice IV y Altium - 2023
 
-
 ## Descripción
 
 El presente trabajo consiste de tres trabajos que ponen en práctica los conocimientos adquiridos en la materia Electrotecnia (22.02):
@@ -12,20 +11,25 @@ El presente trabajo consiste de tres trabajos que ponen en práctica los conocim
 
 ## 1. Implementación de interfaz gráfica en Python
 
-INSERT BRIEF
+Se desarrolló una GUI en Python para simular filtros RLC de distintos órdenes. Permite al usuario elegir la excitación correspondiente al circuito.
 
 ### Funcionamiento y Funcionalidades
 
-* ITEM1
-* ITEM2
+* El usuario ingresa los parámetros correspondientes al sistema, tales como órden, frecuencia de corte, ganancia, entre otros
+* Luego ingresa los parámetros correspondientes a la entrada como tipo de señal, amplitud, frecuencia
+* A partir de esta información se simula la respuesta en frecuencia del circuito, así como la salida correspondiente a la entrada seleccionada
+* Se muestran gráficos de Bode de respuesta en frecuencia de amplitud y fase, y un diagrama de polos y ceros del circuito
+* Se pueden visualizar la entrada y la salida en simultáneo graficadas en función del tiempo
 
 ### Guía de usuario
 
-* ITEM1
-* ITEM2
-```
-code blocks for commands para compilar y todo eso
-```
+* Para ejecutar el programa acceder al .exe correspondiente
+* Seleccioanr el orden del filtro: 1er orden, 2do orden, orden superior
+* Seleccionar el tipo de filtro
+* Dependiendo del tipo de filtro elegido, especificar los parámetros correspondientes
+* Diseñar la entrada a partir de las opciones disponibles
+* Una vez diseñado el filtro y la entrada, actualizar mediante el botón correspondiente
+
 
 ## 2. Simulación en LTSpice
 
