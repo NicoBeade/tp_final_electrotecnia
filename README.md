@@ -50,7 +50,7 @@ Se diseñó una PCB utilizando un OPAMP TL082 desde Altium. Este circuito fue lu
 * Simulación del circuito diseñado
 * Mediciones sobre el circuito desarrollado y desarrollo del mismo
 
-![PCB desarrollado](https://github.com/NicoBeade/tp_final_electrotecnia/blob/main/PCB_image.jpg?raw=true)
+![PCB desarrollado](https://github.com/NicoBeade/tp_final_electrotecnia/blob/main/PCB_image.jpeg?raw=true)
 
 ## Authors
 
