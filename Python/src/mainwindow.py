@@ -63,7 +63,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                  
     def plotGraphics(self):
 
-        InputTypeIndex = self.InputType.currentIndex()          #0: senoide, 1: Escalon, 2: Pulso periodico, 3: Triangular
         SystemOrderIndex = self.SystemOrder.currentIndex()      #0: order 1, 1: Orden Dos, 3: orden superior
 
         self.GainAxes.clear()
@@ -95,6 +94,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             
         #-----------------Bode----------------------------
             w, mag, phase = signal.bode(system)
+            phase = np.round(phase, decimals=6)
             self.GainAxes.semilogx(w, mag, color = 'blue')
             self.PhaseAxes.semilogx(w, phase, color = 'red')
             self.GainAxes.grid()
@@ -155,111 +155,147 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         #-------------Entrada y Salida---------------------
 
-        inputType = self.InputType.currentIndex()
-        if( inputType == 0):
-            # Senoidal
-            ampli = float(self.AmpInput.text())
-            frecuency = float(self.EntryFrecInput.text())
+            inputType = self.InputType.currentIndex()
 
-            phase_duty = float(self.Phase_DutyCicleInput.text())
-            # Senoidal
-            # Señal senoidal
+            self.tin = []
+            self.yin = []
+            if( inputType == 0):
+                
+                self.senoidEntry()
+        
+            if( inputType == 1):
+                
+                self.pulseEntry()
+
+            if( inputType == 2):
+                
+                self.pwmEntry()
+                
+            if( inputType == 3):
+                
+                self.triangularEntry()
+
+            if len(self.tin) and len(self.yin):
+                tout, yout, xout = signal.lsim(system, U=self.yin, T=self.tin)
+
+                self.InputAxes.plot(self.tin, self.yin, color='red')
+                self.InputAxes.grid()
+                self.InputCanvas.draw()
+
+                self.OutputAxes.plot(tout, yout, color='blue')
+                self.OutputAxes.grid()
+                self.OutputCanvas.draw()
+
+        #--------------------------------------------------
+
+    def senoidEntry(self):
+
+        # Senoidal
+        ampli = self.AmpInput.text()
+        frecuency = self.EntryFrecInput.text()
+        phase_duty = self.Phase_DutyCicleInput.text()
+
+        # Senoidal
+        # Señal senoidal
+        if ampli and frecuency and phase_duty:
+            self.ErrorLabel.hide()
+            ampli = float(ampli)
+            frecuency = float(frecuency)
+            phase_duty = float(phase_duty)
             T = 1.0 / frecuency  # Período de la señal senoidal
             num_periods = 6  # Número de períodos que deseas generar
             num_samples_per_period = 200  # Número de muestras por período
 
             num_samples = num_periods * num_samples_per_period
-            tset = np.linspace(0, num_periods * T, num_samples, endpoint=False)
+            self.tin = np.linspace(0, num_periods * T, num_samples, endpoint=False)
+            self.yin = ampli * np.sin(2 * np.pi * frecuency * self.tin + phase_duty*np.pi/180)
+        
+        else:
+            self.ErrorLabel.show()
+            self.ErrorLabel.setText("Faltan Datos!")
 
-            yin = ampli * np.sin(2 * np.pi * frecuency * tset + phase_duty*np.pi/180)
+    def pulseEntry(self):
 
-            tout, yout, xout = signal.lsim(system, U=yin, T=tset)
+        ampli = self.AmpInput.text()
 
-            self.InputAxes.plot(tset, yin, color='red')
-            self.InputAxes.grid()
-            self.InputCanvas.draw()
-
-            self.OutputAxes.plot(tout, yout, color='blue')
-            self.OutputAxes.grid()
-            self.OutputCanvas.draw()
-            
-        if( inputType == 1):
-            ampli = float(self.AmpInput.text())
+        if ampli:
+            self.ErrorLabel.hide()
+            ampli = float(ampli)
             # Escalón
             T = 1  # Duración del escalón
             num_samples = 1000  # Número de muestras
 
-            tset = np.linspace(0, T, num_samples, endpoint=False)
-            yin = np.repeat(ampli, num_samples)
-            yin[0] = 0
-
-            tout, yout, xout = signal.lsim(system, U=yin, T=tset)
-
-            self.InputAxes.plot(tset, yin, color='red')
-            self.InputAxes.grid()
-            self.InputCanvas.draw()
-
-            self.OutputAxes.plot(tout, yout, color='blue')
-            self.OutputAxes.grid()
-            self.OutputCanvas.draw()
+            self.tin = np.linspace(0, T, num_samples, endpoint=False)
+            self.yin = np.repeat(ampli, num_samples)
+            self.yin[0] = 0
+        
+        else:
             
-        if( inputType == 2):
-            ampli = float(self.AmpInput.text())
-            frecuency = float(self.EntryFrecInput.text())
-            duty_cycle = float(self.Phase_DutyCicleInput.text())
+            self.ErrorLabel.show()
+            self.ErrorLabel.setText("Faltan Datos!")
+
+    def pwmEntry(self):
+
+        ampli = self.AmpInput.text()
+        frecuency = self.EntryFrecInput.text()
+        duty_cycle = self.Phase_DutyCicleInput.text()
+
+        if ampli and frecuency and duty_cycle:
+            self.ErrorLabel.hide()
+            ampli = float(ampli)
+            frecuency = float(frecuency)
+            duty_cycle = float(duty_cycle)
             if duty_cycle >= 1:
-                duty_cycle = 1
+                self.ErrorLabel.show()
+                self.ErrorLabel.setText("Ingrese un Duty Cycle menor a 1")
+            else:
+                self.ErrorLabel.hide()
+                # Señal cuadrada PWM
+                T = 1 / frecuency  # Período de la señal cuadrada PWM
+                num_periods = 6  # Número de períodos que deseas generar
+                num_samples_per_period = 200  # Número de muestras por período
 
-            # Señal cuadrada PWM
-            T = 1 / frecuency  # Período de la señal cuadrada PWM
-            num_periods = 6  # Número de períodos que deseas generar
-            num_samples_per_period = 200  # Número de muestras por período
+                num_samples = num_periods * num_samples_per_period
+                self.tin = np.linspace(0, num_periods * T, num_samples, endpoint=False)
 
-            num_samples = num_periods * num_samples_per_period
-            tset = np.linspace(0, num_periods * T, num_samples, endpoint=False)
-
-            yin = ampli * signal.square(2 * np.pi * frecuency * tset, duty=duty_cycle)
-
-            tout, yout, xout = signal.lsim(system, U=yin, T=tset)
-
-            self.InputAxes.plot(tset, yin, color='red')
-            self.InputAxes.grid()
-            self.InputCanvas.draw()
-
-            self.OutputAxes.plot(tout, yout, color='blue')
-            self.OutputAxes.grid()
-            self.OutputCanvas.draw()
+                self.yin = ampli * signal.square(2 * np.pi * frecuency * self.tin, duty=duty_cycle)  
+        
+        else:
             
-            
-        if( inputType == 3):
+            self.ErrorLabel.show()
+            self.ErrorLabel.setText("Faltan Datos!")
+
+    def triangularEntry(self):
+
+        ampli = self.AmpInput.text()
+        frecuency = self.EntryFrecInput.text()
+        duty_cycle = self.Phase_DutyCicleInput.text()
+
+        if ampli and frecuency and duty_cycle:
+            self.ErrorLabel.hide()
             #Triangular
             ampli = float(self.AmpInput.text())
             frecuency = float(self.EntryFrecInput.text())
-            duty_cycle = float(self.Phase_DutyCicleInput.text())
+            duty_cycle = float(duty_cycle)
             if duty_cycle >= 1:
-                duty_cycle = 1
-            # Señal triangular
-            T = 1.0 / frecuency  # Período de la señal triangular
-            num_periods = 6  # Número de períodos que deseas generar
-            num_samples_per_period = 200  # Número de muestras por período
+                self.ErrorLabel.show()
+                self.ErrorLabel.setText("Ingrese un Duty Cycle menor a 1")
+            else:
+                self.ErrorLabel.hide()
+                # Señal triangular
+                T = 1.0 / frecuency  # Período de la señal triangular
+                num_periods = 6  # Número de períodos que deseas generar
+                num_samples_per_period = 200  # Número de muestras por período
 
-            num_samples = num_periods * num_samples_per_period
-            tset = np.linspace(0, num_periods * T, num_samples, endpoint=False)
+                num_samples = num_periods * num_samples_per_period
+                self.tin = np.linspace(0, num_periods * T, num_samples, endpoint=False)
 
-            yin = ampli * signal.sawtooth(2 * np.pi * frecuency * tset, width=duty_cycle)
-
-            tout, yout, xout = signal.lsim(system, U=yin, T=tset)
-
-            self.InputAxes.plot(tset, yin, color='red')
-            self.InputAxes.grid()
-            self.InputCanvas.draw()
-
-            self.OutputAxes.plot(tout, yout, color='blue')
-            self.OutputAxes.grid()
-            self.OutputCanvas.draw()
-
-        #--------------------------------------------------
-
+                self.yin = ampli * signal.sawtooth(2 * np.pi * frecuency * self.tin, width=duty_cycle)
+        
+        else:
+            
+            self.ErrorLabel.show()
+            self.ErrorLabel.setText("Faltan Datos!")
 
     def firstOrder(self, systemParameters):
 
@@ -354,6 +390,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if len(den) == 1:
                 self.ErrorLabel.show()
                 self.ErrorLabel.setText("Denominador incorrecto")
+            elif len(num) > len(den):
+                self.ErrorLabel.show()
+                self.ErrorLabel.setText("Sistema inestable")
             else:
                 systemParameters.append(num)
                 systemParameters.append(den)
