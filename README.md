@@ -61,7 +61,7 @@ Se diseñó una PCB utilizando un OPAMP TL082 desde Altium. Este circuito fue lu
 ## Authors
 
 * Nicolás Agustín Beade - 63109
-* Facundo Ezequiel di Toro - 63390
+* Facundo Ezequiel Di Toro - 63390
 * Nicolás Ezequiel Professi - 63431
 * Estanislao Lopresto Ripa - 63400
 
