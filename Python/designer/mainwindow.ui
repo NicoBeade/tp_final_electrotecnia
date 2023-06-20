@@ -731,7 +731,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="BodeTab">
       <attribute name="title">
@@ -766,7 +766,11 @@
          <height>441</height>
         </rect>
        </property>
-       <layout class="QVBoxLayout" name="IOLayout"/>
+       <layout class="QVBoxLayout" name="IOLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+       </layout>
       </widget>
      </widget>
      <widget class="QWidget" name="PZTab">

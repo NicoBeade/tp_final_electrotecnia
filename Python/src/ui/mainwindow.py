@@ -299,6 +299,7 @@ class Ui_MainWindow(object):
         self.verticalLayoutWidget_2.setObjectName("verticalLayoutWidget_2")
         self.IOLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_2)
         self.IOLayout.setContentsMargins(0, 0, 0, 0)
+        self.IOLayout.setSpacing(0)
         self.IOLayout.setObjectName("IOLayout")
         self.tabWidget.addTab(self.IOTab, "")
         self.PZTab = QtWidgets.QWidget()
@@ -330,7 +331,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
