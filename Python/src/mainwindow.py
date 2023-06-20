@@ -31,7 +31,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         #Entry input
         self.InputType.currentIndexChanged.connect(self.changeInputFrame)
         self.PhaseLabel.show()
-        self.DutyCicleLabel.hide()
+        self.DutyCycleLabel.hide()
         #Graphics
 
         #Grafico de ganancia
@@ -193,7 +193,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Senoidal
         ampli = self.AmpInput.text()
         frecuency = self.EntryFrecInput.text()
-        phase_duty = self.Phase_DutyCicleInput.text()
+        phase_duty = self.Phase_DutyCycleInput.text()
 
         # Senoidal
         # Señal senoidal
@@ -238,7 +238,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         ampli = self.AmpInput.text()
         frecuency = self.EntryFrecInput.text()
-        duty_cycle = self.Phase_DutyCicleInput.text()
+        duty_cycle = self.Phase_DutyCycleInput.text()
 
         if ampli and frecuency and duty_cycle:
             self.ErrorLabel.hide()
@@ -269,7 +269,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         ampli = self.AmpInput.text()
         frecuency = self.EntryFrecInput.text()
-        duty_cycle = self.Phase_DutyCicleInput.text()
+        duty_cycle = self.Phase_DutyCycleInput.text()
 
         if ampli and frecuency and duty_cycle:
             self.ErrorLabel.hide()
@@ -422,21 +422,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if( order == 0):
             self.EntryFrecInput.show()
             self.EntryFrecLabel.show()
-            self.Phase_DutyCicleInput.show()
+            self.Phase_DutyCycleInput.show()
             self.PhaseLabel.show()
-            self.DutyCicleLabel.hide()
+            self.DutyCycleLabel.hide()
         if( order == 1):
             self.EntryFrecLabel.hide()
             self.EntryFrecInput.hide()
-            self.Phase_DutyCicleInput.hide()
+            self.Phase_DutyCycleInput.hide()
             self.PhaseLabel.hide()
-            self.DutyCicleLabel.hide()
+            self.DutyCycleLabel.hide()
         if( order == 2 or order == 3):
             self.EntryFrecLabel.show()
             self.EntryFrecInput.show()
-            self.Phase_DutyCicleInput.show()
+            self.Phase_DutyCycleInput.show()
             self.PhaseLabel.hide()
-            self.DutyCicleLabel.show()
+            self.DutyCycleLabel.show()
         
             
 

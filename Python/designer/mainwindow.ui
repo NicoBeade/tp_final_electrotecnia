@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1114</width>
-    <height>861</height>
+    <height>900</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -15,6 +15,18 @@
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1114</width>
+    <height>900</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1114</width>
+    <height>900</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
@@ -61,7 +73,7 @@
      </property>
      <property name="font">
       <font>
-       <pointsize>22</pointsize>
+       <pointsize>20</pointsize>
       </font>
      </property>
      <property name="text">
@@ -85,7 +97,7 @@
      </property>
      <property name="font">
       <font>
-       <pointsize>14</pointsize>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <item>
@@ -115,7 +127,7 @@
      </property>
      <property name="font">
       <font>
-       <pointsize>14</pointsize>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <item>
@@ -197,7 +209,7 @@
       </property>
       <property name="font">
        <font>
-        <pointsize>14</pointsize>
+        <pointsize>12</pointsize>
        </font>
       </property>
       <property name="text">
@@ -250,7 +262,7 @@
       <property name="font">
        <font>
         <family>Symbol</family>
-        <pointsize>24</pointsize>
+        <pointsize>12</pointsize>
        </font>
       </property>
       <property name="text">
@@ -287,7 +299,7 @@
       <property name="font">
        <font>
         <family>Symbol</family>
-        <pointsize>24</pointsize>
+        <pointsize>12</pointsize>
        </font>
       </property>
       <property name="text">
@@ -336,7 +348,7 @@
       </property>
       <property name="font">
        <font>
-        <pointsize>14</pointsize>
+        <pointsize>12</pointsize>
        </font>
       </property>
       <property name="text">
@@ -372,7 +384,7 @@
       </property>
       <property name="font">
        <font>
-        <pointsize>14</pointsize>
+        <pointsize>12</pointsize>
        </font>
       </property>
       <property name="text">
@@ -409,7 +421,7 @@
      </property>
      <property name="font">
       <font>
-       <pointsize>14</pointsize>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="text">
@@ -490,7 +502,7 @@
      </property>
      <property name="font">
       <font>
-       <pointsize>22</pointsize>
+       <pointsize>20</pointsize>
       </font>
      </property>
      <property name="text">
@@ -517,12 +529,12 @@
      </property>
      <property name="font">
       <font>
-       <pointsize>14</pointsize>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <item>
       <property name="text">
-       <string>Seniode</string>
+       <string>Senoide</string>
       </property>
      </item>
      <item>
@@ -552,7 +564,7 @@
      </property>
      <property name="font">
       <font>
-       <pointsize>14</pointsize>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="text">
@@ -603,7 +615,7 @@
      </property>
      <property name="font">
       <font>
-       <pointsize>14</pointsize>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="text">
@@ -624,7 +636,7 @@
      </property>
      <property name="font">
       <font>
-       <pointsize>14</pointsize>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="text">
@@ -634,7 +646,7 @@
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
-    <widget class="QLineEdit" name="Phase_DutyCicleInput">
+    <widget class="QLineEdit" name="Phase_DutyCycleInput">
      <property name="geometry">
       <rect>
        <x>350</x>
@@ -649,10 +661,10 @@
       </font>
      </property>
     </widget>
-    <widget class="QLabel" name="DutyCicleLabel">
+    <widget class="QLabel" name="DutyCycleLabel">
      <property name="geometry">
       <rect>
-       <x>210</x>
+       <x>215</x>
        <y>170</y>
        <width>140</width>
        <height>30</height>
@@ -660,11 +672,11 @@
      </property>
      <property name="font">
       <font>
-       <pointsize>14</pointsize>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="text">
-      <string>Duty Cicle</string>
+      <string>Duty Cycle</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -677,7 +689,7 @@
       <x>20</x>
       <y>250</y>
       <width>1071</width>
-      <height>541</height>
+      <height>581</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -715,7 +727,7 @@
        <x>10</x>
        <y>10</y>
        <width>1051</width>
-       <height>471</height>
+       <height>501</height>
       </rect>
      </property>
      <property name="currentIndex">
@@ -731,7 +743,7 @@
          <x>0</x>
          <y>0</y>
          <width>1041</width>
-         <height>411</height>
+         <height>441</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="BodeLayout">
@@ -751,7 +763,7 @@
          <x>0</x>
          <y>0</y>
          <width>1041</width>
-         <height>411</height>
+         <height>441</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="IOLayout"/>
@@ -767,7 +779,7 @@
          <x>0</x>
          <y>0</y>
          <width>1041</width>
-         <height>411</height>
+         <height>441</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="PZLayout"/>
@@ -778,7 +790,7 @@
      <property name="geometry">
       <rect>
        <x>860</x>
-       <y>490</y>
+       <y>520</y>
        <width>181</width>
        <height>41</height>
       </rect>
@@ -794,7 +806,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>490</y>
+       <y>520</y>
        <width>841</width>
        <height>41</height>
       </rect>
