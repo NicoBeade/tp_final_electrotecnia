@@ -23,13 +23,12 @@ Se desarrolló una GUI en Python para simular filtros RLC de distintos órdenes.
 
 ### Guía de usuario (Para más información ver el PDF de "Guía de Usuario" proporcionado)
 
-* Para ejecutar el programa acceder al .exe correspondiente
+* Para ejecutar el programa acceder al .exe correspondiente (entregado por mail debido a que el archivo era demasiado grande)
 * Seleccioanr el orden del filtro: 1er orden, 2do orden, orden superior
 * Seleccionar el tipo de filtro
 * Dependiendo del tipo de filtro elegido, especificar los parámetros correspondientes
 * Diseñar la entrada a partir de las opciones disponibles
 * Una vez diseñado el filtro y la entrada, actualizar mediante el botón correspondiente
-
 
 ## 2. Simulación en LTSpice
 
