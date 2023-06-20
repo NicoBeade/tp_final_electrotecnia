@@ -70,4 +70,4 @@ Se diseñó una PCB utilizando un OPAMP TL082 desde Altium. Este circuito fue lu
 
 ## Referencias
 
-* No hubo
+* Todos los ejemplos consultados para el desarrollo del trabajo fueron incluidos en el repositorio
