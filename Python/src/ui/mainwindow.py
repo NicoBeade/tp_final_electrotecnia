@@ -337,7 +337,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label.setText(_translate("MainWindow", "Configuración del sistema"))
+        self.label.setText(_translate("MainWindow", "Configuración del Sistema"))
         self.SystemOrder.setItemText(0, _translate("MainWindow", "Primer Orden"))
         self.SystemOrder.setItemText(1, _translate("MainWindow", "Segundo Orden"))
         self.SystemOrder.setItemText(2, _translate("MainWindow", "Orden Superior"))
@@ -357,8 +357,8 @@ class Ui_MainWindow(object):
         self.GainLabel.setText(_translate("MainWindow", "Ganancia"))
         self.label_2.setText(_translate("MainWindow", "Configuración de la Entrada"))
         self.InputType.setItemText(0, _translate("MainWindow", "Senoide"))
-        self.InputType.setItemText(1, _translate("MainWindow", "Escalon"))
-        self.InputType.setItemText(2, _translate("MainWindow", "Pulso periodico"))
+        self.InputType.setItemText(1, _translate("MainWindow", "Escalón"))
+        self.InputType.setItemText(2, _translate("MainWindow", "Pulso periódico"))
         self.InputType.setItemText(3, _translate("MainWindow", "Triangular"))
         self.AmpLabel.setText(_translate("MainWindow", "Amplitud"))
         self.EntryFrecLabel.setText(_translate("MainWindow", "Frecuencia"))

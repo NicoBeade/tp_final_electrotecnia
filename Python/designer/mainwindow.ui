@@ -77,7 +77,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Configuración del sistema</string>
+      <string>Configuración del Sistema</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -539,12 +539,12 @@
      </item>
      <item>
       <property name="text">
-       <string>Escalon</string>
+       <string>Escalón</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>Pulso periodico</string>
+       <string>Pulso periódico</string>
       </property>
      </item>
      <item>

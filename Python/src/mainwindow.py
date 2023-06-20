@@ -114,8 +114,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             zerosimagMod = [np.abs(zero) for zero in zeros_imag]
             xLimMax = 0
             yLimMax = 0
-
-        #SUS_PNG = mpimg.imread('resources\\SUS.png')
         
             if len(system.zeros):
                 for i in range(len(zeros_real)):
@@ -140,15 +138,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             
             # Saca el 0 del grafico
             yticks = self.PZAxes.get_yticks()
-            xticks = self.PZAxes.get_xticks()
             # Número que deseas eliminar
             numero_a_borrar = 0
             # Filtrar las marcas del eje para eliminar el número específico
             nuevas_yticks = [tick for tick in yticks if tick != numero_a_borrar]
-            nuevas_xticks = [tick for tick in yticks if tick != numero_a_borrar]
             # Establecer las nuevas marcas del eje
             self.PZAxes.set_yticks(nuevas_yticks)
-            self.PZAxes.set_xticks(nuevas_xticks)
             
             self.PZCanvas.draw()
         #--------------------------------------------------
@@ -176,6 +171,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.triangularEntry()
 
             if len(self.tin) and len(self.yin):
+                self.ErrorLabel.hide()
                 tout, yout, xout = signal.lsim(system, U=self.yin, T=self.tin)
 
                 self.InputAxes.plot(self.tin, self.yin, color='red')
@@ -185,6 +181,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.OutputAxes.plot(tout, yout, color='blue')
                 self.OutputAxes.grid()
                 self.OutputCanvas.draw()
+
+            else:
+                self.ErrorLabel.show()
+
+        else:
+            self.ErrorLabel.show()
 
         #--------------------------------------------------
 
@@ -197,138 +199,171 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # Senoidal
         # Señal senoidal
-        if ampli and frecuency and phase_duty:
-            self.ErrorLabel.hide()
-            ampli = float(ampli)
-            frecuency = float(frecuency)
-            phase_duty = float(phase_duty)
-            T = 1.0 / frecuency  # Período de la señal senoidal
-            num_periods = 6  # Número de períodos que deseas generar
-            num_samples_per_period = 200  # Número de muestras por período
+        try:
+            if ampli and frecuency and phase_duty:
+                self.ErrorLabel.hide()
+                ampli = float(ampli)
+                frecuency = float(frecuency)
+                phase_duty = float(phase_duty)
 
-            num_samples = num_periods * num_samples_per_period
-            self.tin = np.linspace(0, num_periods * T, num_samples, endpoint=False)
-            self.yin = ampli * np.sin(2 * np.pi * frecuency * self.tin + phase_duty*np.pi/180)
-        
-        else:
-            self.ErrorLabel.show()
-            self.ErrorLabel.setText("Faltan Datos!")
+                if frecuency < 0:
+                    self.ErrorLabel.show()
+                    self.ErrorLabel.setText("Ingrese una Frecuencia positiva")
+                else:
+                    T = 1.0 / frecuency  # Período de la señal senoidal
+                    num_periods = 6  # Número de períodos que deseas generar
+                    num_samples_per_period = 200  # Número de muestras por período
+
+                    num_samples = num_periods * num_samples_per_period
+                    self.tin = np.linspace(0, num_periods * T, num_samples, endpoint=False)
+                    self.yin = ampli * np.sin(2 * np.pi * frecuency * self.tin + phase_duty*np.pi/180)
+            else:
+                self.tin.clear()
+                self.yin.clear()
+                self.ErrorLabel.setText("Faltan Datos De La Entrada!")
+        except ValueError:
+                self.ErrorLabel.show()
+                self.ErrorLabel.setText("Ingrese valores válidos")
 
     def pulseEntry(self):
 
         ampli = self.AmpInput.text()
+        try:
+            if ampli:
+                self.ErrorLabel.hide()
+                ampli = float(ampli)
+                # Escalón
+                T = 1  # Duración del escalón
+                num_samples = 1000  # Número de muestras
 
-        if ampli:
-            self.ErrorLabel.hide()
-            ampli = float(ampli)
-            # Escalón
-            T = 1  # Duración del escalón
-            num_samples = 1000  # Número de muestras
-
-            self.tin = np.linspace(0, T, num_samples, endpoint=False)
-            self.yin = np.repeat(ampli, num_samples)
-            self.yin[0] = 0
-        
-        else:
-            
-            self.ErrorLabel.show()
-            self.ErrorLabel.setText("Faltan Datos!")
+                self.tin = np.linspace(0, T, num_samples, endpoint=False)
+                self.yin = np.repeat(ampli, num_samples)
+                self.yin[0] = 0
+            else:
+                self.tin.clear()
+                self.yin.clear()
+                self.ErrorLabel.setText("Faltan Datos De La Entrada!")
+        except ValueError:
+                self.ErrorLabel.show()
+                self.ErrorLabel.setText("Ingrese valores válidos")
 
     def pwmEntry(self):
 
         ampli = self.AmpInput.text()
         frecuency = self.EntryFrecInput.text()
         duty_cycle = self.Phase_DutyCycleInput.text()
-
-        if ampli and frecuency and duty_cycle:
-            self.ErrorLabel.hide()
-            ampli = float(ampli)
-            frecuency = float(frecuency)
-            duty_cycle = float(duty_cycle)
-            if duty_cycle >= 1:
-                self.ErrorLabel.show()
-                self.ErrorLabel.setText("Ingrese un Duty Cycle menor a 1")
-            else:
+        try:
+            if ampli and frecuency and duty_cycle:
                 self.ErrorLabel.hide()
-                # Señal cuadrada PWM
-                T = 1 / frecuency  # Período de la señal cuadrada PWM
-                num_periods = 6  # Número de períodos que deseas generar
-                num_samples_per_period = 200  # Número de muestras por período
+                ampli = float(ampli)
+                frecuency = float(frecuency)
+                duty_cycle = float(duty_cycle)
+                if duty_cycle >= 1:
+                    self.ErrorLabel.show()
+                    self.ErrorLabel.setText("Ingrese un Duty Cycle menor a 1")
+                elif duty_cycle < 0:
+                    self.ErrorLabel.show()
+                    self.ErrorLabel.setText("Ingrese un Duty Cycle positivo")
+                elif frecuency < 0:
+                    self.ErrorLabel.show()
+                    self.ErrorLabel.setText("Ingrese una Frecuencia positiva")
+                else:
+                    self.ErrorLabel.hide()
+                    # Señal cuadrada PWM
+                    T = 1 / frecuency  # Período de la señal cuadrada PWM
+                    num_periods = 6  # Número de períodos que deseas generar
+                    num_samples_per_period = 200  # Número de muestras por período
 
-                num_samples = num_periods * num_samples_per_period
-                self.tin = np.linspace(0, num_periods * T, num_samples, endpoint=False)
+                    num_samples = num_periods * num_samples_per_period
+                    self.tin = np.linspace(0, num_periods * T, num_samples, endpoint=False)
 
-                self.yin = ampli * signal.square(2 * np.pi * frecuency * self.tin, duty=duty_cycle)  
-        
-        else:
-            
-            self.ErrorLabel.show()
-            self.ErrorLabel.setText("Faltan Datos!")
+                    self.yin = ampli * signal.square(2 * np.pi * frecuency * self.tin, duty=duty_cycle)  
+            else:
+                self.tin.clear()
+                self.yin.clear()
+                self.ErrorLabel.setText("Faltan Datos De La Entrada!")
+        except ValueError:
+                self.ErrorLabel.show()
+                self.ErrorLabel.setText("Ingrese valores válidos")
 
     def triangularEntry(self):
 
         ampli = self.AmpInput.text()
         frecuency = self.EntryFrecInput.text()
         duty_cycle = self.Phase_DutyCycleInput.text()
-
-        if ampli and frecuency and duty_cycle:
-            self.ErrorLabel.hide()
-            #Triangular
-            ampli = float(self.AmpInput.text())
-            frecuency = float(self.EntryFrecInput.text())
-            duty_cycle = float(duty_cycle)
-            if duty_cycle >= 1:
-                self.ErrorLabel.show()
-                self.ErrorLabel.setText("Ingrese un Duty Cycle menor a 1")
-            else:
+        try:
+            if ampli and frecuency and duty_cycle:
                 self.ErrorLabel.hide()
-                # Señal triangular
-                T = 1.0 / frecuency  # Período de la señal triangular
-                num_periods = 6  # Número de períodos que deseas generar
-                num_samples_per_period = 200  # Número de muestras por período
+                #Triangular
+                ampli = float(self.AmpInput.text())
+                frecuency = float(self.EntryFrecInput.text())
+                duty_cycle = float(duty_cycle)
+                if duty_cycle >= 1:
+                    self.ErrorLabel.show()
+                    self.ErrorLabel.setText("Ingrese un Duty Cycle menor a 1")
+                elif duty_cycle < 0:
+                    self.ErrorLabel.show()
+                    self.ErrorLabel.setText("Ingrese un Duty Cycle positivo")
+                elif frecuency < 0:
+                    self.ErrorLabel.show()
+                    self.ErrorLabel.setText("Ingrese una Frecuencia positiva")
+                else:
+                    self.ErrorLabel.hide()
+                    # Señal triangular
+                    T = 1.0 / frecuency  # Período de la señal triangular
+                    num_periods = 6  # Número de períodos que deseas generar
+                    num_samples_per_period = 200  # Número de muestras por período
 
-                num_samples = num_periods * num_samples_per_period
-                self.tin = np.linspace(0, num_periods * T, num_samples, endpoint=False)
+                    num_samples = num_periods * num_samples_per_period
+                    self.tin = np.linspace(0, num_periods * T, num_samples, endpoint=False)
 
-                self.yin = ampli * signal.sawtooth(2 * np.pi * frecuency * self.tin, width=duty_cycle)
-        
-        else:
-            
-            self.ErrorLabel.show()
-            self.ErrorLabel.setText("Faltan Datos!")
+                    self.yin = ampli * signal.sawtooth(2 * np.pi * frecuency * self.tin, width=duty_cycle)
+            else:
+                self.tin.clear()
+                self.yin.clear()
+                self.ErrorLabel.setText("Faltan Datos De La Entrada!")
+        except ValueError:
+                self.ErrorLabel.show()
+                self.ErrorLabel.setText("Ingrese valores válidos")
 
     def firstOrder(self, systemParameters):
 
         filterType = self.FirstOrderFilters.currentIndex()      #0: pasa bajos, 1: pasa altos, 2: pasa todo
         gain = self.GainInput.text()
         frecuency = self.FrecuencyInput.text()
+        try:
+            if gain and frecuency:
+                self.ErrorLabel.hide()
 
-        if gain and frecuency:
-            self.ErrorLabel.hide()
+                gain = float(self.GainInput.text())
+                frecuency = float(self.FrecuencyInput.text())
+                k = pow(10, gain/20)
 
-            gain = float(self.GainInput.text())
-            frecuency = float(self.FrecuencyInput.text())
-            k = pow(10, gain/20)
-            #pasa bajos
-            if filterType == 0:
-                num = [k]
-                den = [(1/frecuency), 1]
-            #pasa altos
-            if filterType == 1:
-                num = [k / frecuency, 0]
-                den = [(1/frecuency), 1]
-            #pasa todo
-            if filterType == 2:
-                num = [k/frecuency, -k]
-                den = [(1/frecuency), 1]
+                if frecuency < 0:
+                    self.ErrorLabel.show()
+                    self.ErrorLabel.setText("Ingrese una Frecuencia positiva")
+                else:
+                    #pasa bajos
+                    if filterType == 0:
+                        num = [k]
+                        den = [(1/frecuency), 1]
+                    #pasa altos
+                    if filterType == 1:
+                        num = [k / frecuency, 0]
+                        den = [(1/frecuency), 1]
+                    #pasa todo
+                    if filterType == 2:
+                        num = [k/frecuency, -k]
+                        den = [(1/frecuency), 1]
 
-            systemParameters.append(num)
-            systemParameters.append(den)
-                    
-        else:
-
-            self.ErrorLabel.show()
-            self.ErrorLabel.setText("Faltan Datos!")
+                    systemParameters.append(num)
+                    systemParameters.append(den)           
+            else:
+                self.systemParameters.clear()
+                self.ErrorLabel.setText("Faltan Datos!")
+        except ValueError:
+                self.ErrorLabel.show()
+                self.ErrorLabel.setText("Ingrese valores válidos") 
 
     def secondOrder(self, systemParameters):
 
@@ -336,70 +371,78 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         gain = self.GainInput.text()
         omega = self.OmegaInput.text()
         xsi = self.XsiInput.text()
-        
-        if gain and omega and xsi:
-            self.ErrorLabel.hide()
+        try:
+            if gain and omega and xsi:
+                self.ErrorLabel.hide()
 
-            gain = float(self.GainInput.text())
-            omega = float(self.OmegaInput.text())
-            xsi = float(self.XsiInput.text())
-            k = pow(10, gain/20)
-            #pasa bajos
-            if filterType == 0:
-                num = [k]
-                den = [(1/pow(omega, 2)), 2*xsi/omega, 1]
-            #pasa altos
-            if filterType == 1:
-                num = [k / pow(omega, 2), 0, 0]
-                den = [(1/pow(omega, 2)), 2*xsi/omega, 1]
-            #pasa todo
-            if filterType == 2:
-                num = [(k/pow(omega, 2)), -k*2*xsi/omega, k]
-                den = [(1/pow(omega, 2)), 2*xsi/omega, 1]
-            #pasa banda
-            if filterType == 3:
-                num = [k * 2*xsi / omega, 0]
-                den = [(1/pow(omega, 2)), 2*xsi/omega, 1]
-            #Notch
-            if filterType == 4:
-                num = [(k/pow(omega, 2)), 0, k]
-                den = [(1/pow(omega, 2)), 2*xsi/omega, 1]
-        
-            systemParameters.append(num)
-            systemParameters.append(den)
-        
-        else:
-            self.ErrorLabel.show()
-            self.ErrorLabel.setText("Faltan Datos!")
+                gain = float(self.GainInput.text())
+                omega = float(self.OmegaInput.text())
+                xsi = float(self.XsiInput.text())
+                k = pow(10, gain/20)
+                if omega < 0:
+                    self.ErrorLabel.show()
+                    self.ErrorLabel.setText("Ingrese un Omega positivo")
+                else:
+                    #pasa bajos
+                    if filterType == 0:
+                        num = [k]
+                        den = [(1/pow(omega, 2)), 2*xsi/omega, 1]
+                    #pasa altos
+                    if filterType == 1:
+                        num = [k / pow(omega, 2), 0, 0]
+                        den = [(1/pow(omega, 2)), 2*xsi/omega, 1]
+                    #pasa todo
+                    if filterType == 2:
+                        num = [(k/pow(omega, 2)), -k*2*xsi/omega, k]
+                        den = [(1/pow(omega, 2)), 2*xsi/omega, 1]
+                    #pasa banda
+                    if filterType == 3:
+                        num = [k * 2*xsi / omega, 0]
+                        den = [(1/pow(omega, 2)), 2*xsi/omega, 1]
+                    #Notch
+                    if filterType == 4:
+                        num = [(k/pow(omega, 2)), 0, k]
+                        den = [(1/pow(omega, 2)), 2*xsi/omega, 1]
+                
+                    systemParameters.append(num)
+                    systemParameters.append(den)
+            else:
+                self.systemParameters.clear()
+                self.ErrorLabel.setText("Faltan Datos!")
+        except ValueError:
+                self.ErrorLabel.show()
+                self.ErrorLabel.setText("Ingrese valores válidos")
 
     def supOrder(self, systemParameters):
 
         gain = self.GainInput.text()
         numerador = self.NumeratorInput.text()
         denominador = self.DenominatorInput.text()
-        
-        if gain and numerador and denominador:
-            self.ErrorLabel.hide()
-            
-            gain = float(self.GainInput.text())
-            k = pow(10, gain/20)
-            num = numerador.split()
-            num = [float(numero) * k for numero in num]
-            den = denominador.split()
-            den = [float(numero) for numero in den]
-            if len(den) == 1:
-                self.ErrorLabel.show()
-                self.ErrorLabel.setText("Denominador incorrecto")
-            elif len(num) > len(den):
-                self.ErrorLabel.show()
-                self.ErrorLabel.setText("Sistema inestable")
+        try:
+            if gain and numerador and denominador:
+                self.ErrorLabel.hide()
+                
+                gain = float(self.GainInput.text())
+                k = pow(10, gain/20)
+                num = numerador.split()
+                num = [float(numero) * k for numero in num]
+                den = denominador.split()
+                den = [float(numero) for numero in den]
+                if len(den) == 1:
+                    self.ErrorLabel.show()
+                    self.ErrorLabel.setText("Denominador incorrecto")
+                elif len(num) > len(den):
+                    self.ErrorLabel.show()
+                    self.ErrorLabel.setText("Sistema inestable")
+                else:
+                    systemParameters.append(num)
+                    systemParameters.append(den)
             else:
-                systemParameters.append(num)
-                systemParameters.append(den)
-        
-        else:
+                self.systemParameters.clear()
+                self.ErrorLabel.setText("Faltan Datos!")
+        except ValueError:
             self.ErrorLabel.show()
-            self.ErrorLabel.setText("Faltan Datos!")
+            self.ErrorLabel.setText("Ingrese valores válidos")
 
     def changeSystemFrame(self):
         order = self.SystemOrder.currentIndex()
@@ -437,6 +480,3 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.Phase_DutyCycleInput.show()
             self.PhaseLabel.hide()
             self.DutyCycleLabel.show()
-        
-            
-
