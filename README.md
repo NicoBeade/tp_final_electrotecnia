@@ -21,7 +21,7 @@ Se desarrolló una GUI en Python para simular filtros RLC de distintos órdenes.
 * Se muestran gráficos de Bode de respuesta en frecuencia de amplitud y fase, y un diagrama de polos y ceros del circuito
 * Se pueden visualizar la entrada y la salida en simultáneo graficadas en función del tiempo
 
-### Guía de usuario
+### Guía de usuario (Para más información ver el PDF de "Guía de Usuario" proporcionado)
 
 * Para ejecutar el programa acceder al .exe correspondiente
 * Seleccioanr el orden del filtro: 1er orden, 2do orden, orden superior
